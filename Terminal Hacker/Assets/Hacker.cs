@@ -9,6 +9,10 @@ public class Hacker : MonoBehaviour {
     int level;
 
     enum Screen { MainMenu, Password, Win};
+    string password;
+    string[] level1Passwords = {"fitness", "swimming", "slide", "books", "library"};
+    string[] level2Passwords = {"finance", "monetary", "mortgage", "teller", "money"};
+    string[] level3Passwords = {"security", "fraud", "intelligence", "espionage", "shadows"};
 
     Screen currentScreen;
 
@@ -42,24 +46,19 @@ public class Hacker : MonoBehaviour {
         } else if (currentScreen == Screen.MainMenu)
         {
             RunMainMenu(input);
+        } else if (currentScreen == Screen.Password)
+        {
+            CheckPassword(input);
         }
     }
 
     void RunMainMenu(string input)
     {
-        if (input == "1")
+        bool isValidLevelNumber = (input == "1" || input == "2" || input == "3");
+
+        if (isValidLevelNumber)
         {
-            level = 1;
-            StartGame();
-        }
-        else if (input == "2")
-        {
-            level = 2;
-            StartGame();
-        }
-        else if (input == "3")
-        {
-            level = 3;
+            level = int.Parse(input);
             StartGame();
         }
         else if (input == "42")
@@ -82,12 +81,49 @@ public class Hacker : MonoBehaviour {
         {
             Terminal.WriteLine("Please select a valid level!\nThe fate of the world is at stake!");
         }
+
+        //if (input == "1")
+        //{
+        //    password = "fitness";
+        //    StartGame();
+        //}
+        //else if (input == "2")
+        //{
+        //    password = "financial";
+        //    StartGame();
+        //}
+        //else if (input == "3")
+        //{
+        //    password = "security";
+        //    StartGame();
+        //}
     }
 
     void StartGame()
     {
         currentScreen = Screen.Password;
-        Terminal.WriteLine("You have selected level " + level);
+        Terminal.ClearScreen();
         Terminal.WriteLine("Enter your password");
+    }
+
+    void CheckPassword(string input)
+    {
+        if (input == password)
+        {
+            currentScreen = Screen.Win;
+            ShowWinScreen();
+        }
+        else
+        {
+            Terminal.WriteLine("Please Try Again");
+        }
+    }
+    
+    void ShowWinScreen()
+    {
+        Terminal.ClearScreen();
+        Terminal.WriteLine("Password Accepted");
+        Terminal.WriteLine(" ");
+        Terminal.WriteLine("Congraulations. you've completed level " + level + ". Type menu to go back to main menu");
     }
 }
