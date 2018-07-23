@@ -1,8 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Hacker : MonoBehaviour {
+
+    //game state
+    int level;
+
+    enum Screen { MainMenu, Password, Win};
+
+    Screen currentScreen;
 
 	// Use this for initialization
 	void Start() {
@@ -10,6 +18,7 @@ public class Hacker : MonoBehaviour {
 	}
 
     void ShowMainMenu(string greeting) {
+        currentScreen = Screen.MainMenu;
         Terminal.ClearScreen();
         Terminal.WriteLine(greeting);
         Terminal.WriteLine("Initializing Hacker.exe");
@@ -30,30 +39,55 @@ public class Hacker : MonoBehaviour {
         if (input == "menu")
         {
             ShowMainMenu("Welcome Back Khalid");
-        } else if (input == "1")
+        } else if (currentScreen == Screen.MainMenu)
         {
-            Terminal.WriteLine("Rec Center Selected");
-        } else if (input == "2")
+            RunMainMenu(input);
+        }
+    }
+
+    void RunMainMenu(string input)
+    {
+        if (input == "1")
         {
-            Terminal.WriteLine("TD Bank Selected");
-        } else if (input == "3")
+            level = 1;
+            StartGame();
+        }
+        else if (input == "2")
         {
-            Terminal.WriteLine("Canadian Security Agency Selected");
-        } else if (input == "42")
+            level = 2;
+            StartGame();
+        }
+        else if (input == "3")
+        {
+            level = 3;
+            StartGame();
+        }
+        else if (input == "42")
         {
             Terminal.WriteLine("Ah you wise wizard,\nyou know the meaning of life,\nbut unfourtanently it is not a valid\nlevel.");
-        } else if(input == "007")
+        }
+        else if (input == "007")
         {
             Terminal.WriteLine("We've been expecting you, Mr.Bond.\nPlease head to any level to begin your mission");
-        } else if (input == "69")
+        }
+        else if (input == "69")
         {
             Terminal.WriteLine("Title of your sex tape!;p\nPlease select a valid level");
-        } else if (input == "99")
+        }
+        else if (input == "99")
         {
             Terminal.WriteLine("NINE NINE!, noice, smort.\nCatch the Pontiact Bandit\nin one of the levels!");
-        } else
+        }
+        else
         {
             Terminal.WriteLine("Please select a valid level!\nThe fate of the world is at stake!");
         }
+    }
+
+    void StartGame()
+    {
+        currentScreen = Screen.Password;
+        Terminal.WriteLine("You have selected level " + level);
+        Terminal.WriteLine("Enter your password");
     }
 }
